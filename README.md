@@ -20,6 +20,23 @@ This project is an initial roadmap to build chatbots using modern day LLMs like 
 - **Containerization:** Docker
 - **Server:** Uvicorn
 
+
+## Architecture
+
+This application follows a simple, containerized microservice architecture.
+
+┌───────────────────┐        ┌──────────────────────────────────────────────────┐
+│                   │        │             Docker Container (on Port 8080)      │
+│      User         ├───────►│  FastAPI 🛎️ ───► LangChain 🔗 ───► LLM API 🧠  │
+│                   │◄───────┤                                                  │
+└───────────────────┘        └──────────────────────────────────────────────────┘
+
+1.  A **User** sends a query to the FastAPI endpoint.
+2.  **FastAPI** receives the request and passes it to the LangChain logic.
+3.  **LangChain** formats the prompt and sends it to the external **LLM API** (e.g., DeepSeek).
+4.  The response is sent back through the chain and returned to the user.
+
+   
 ## Setup and Installation
 
 To run this project locally, follow these steps:
@@ -50,6 +67,11 @@ To run this project locally, follow these steps:
 
 Once the container is running, you can interact with the API at `http://localhost:8080/docs` or send a request using a tool like `curl`:
 
+## API Usage
+
+Once the container is running, you can interact with the API at `http://localhost:8080/docs` or send a request using a tool like `curl`.
+
+**Example Request:**
 ```bash
 curl -X 'POST' \
   'http://localhost:8080/chatbot' \
@@ -58,3 +80,10 @@ curl -X 'POST' \
   -d '{
   "text": "Tell me a fun fact about the roman empire"
 }'
+ ```
+## Example Response
+```bash
+{
+  "response": "A fun fact about the Roman Empire is that they had a form of central heating called a hypocaust, where hot air from a furnace would circulate under floors and through walls to heat rooms and public baths!"
+}
+ ```
